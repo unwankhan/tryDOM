@@ -6,6 +6,7 @@ const d=document.getElementById("thanks");//bottom
 a.textContent="Fruit World";
 a.style.color="orange";
 b.style.backgroundColor="green";
+b.style.borderStyle="solid";
 b.style.borderBottomColor="orange";
 c.style.color="green";
 d.innerHTML= "<p>Please visit us again</p>";
