@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://jsfiddle.net/unwankhan/fusg1360/2/embedded/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    <meta http-equiv="edit-Type" edit="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JSFiddle</title>
+
+      <meta name="robots" content="index, follow">
+      <meta name="googlebot" content="index, follow">
+
+      <script type="text/javascript">
+        var height
+        var force_height = null
+        var slug = "fusg1360"
+        var show_src = "//fiddle.jshell.net/unwankhan/fusg1360/2/show/light/"
+        var resize_element_counter = 0
+        var shell_edit_url = "/unwankhan/fusg1360/2/light/"
+
+      </script>
+
+      <script src="./highlight.pack.js"></script>
+      <script src="./embed.js"></script>
+      <link rel="stylesheet" media="screen" href="./embed-light.css">
+
+    <style type="text/css" media="screen">
+    /* */</style>
+
+  </head>
+  <body>
+    <div id="full-embed">
+        <header>
+          <h1>
+            <a href="https://jsfiddle.net/unwankhan/fusg1360/2/" target="_blank">
+              <svg width="34" height="40">
+      <use xlink:href="//jsfiddle.net/sprite.svg#logo"></use>
+    </svg>Edit in JSFiddle
+            </a>
+          </h1>
+          <div id="actions">
+            <ul class="normalRes">
+                <li class="active">
+                  <a data-trigger-type="js" href="https://jsfiddle.net/unwankhan/fusg1360/2/embedded/#JavaScript">JavaScript</a>
+                </li>
+                <li class="">
+                  <a data-trigger-type="html" href="https://jsfiddle.net/unwankhan/fusg1360/2/embedded/#HTML">HTML</a>
+                </li>
+                <li class="">
+                  <a data-trigger-type="css" href="https://jsfiddle.net/unwankhan/fusg1360/2/embedded/#CSS">CSS</a>
+                </li>
+                <li class="">
+                  <a data-trigger-type="result" href="https://jsfiddle.net/unwankhan/fusg1360/2/embedded/#Result">Result</a>
+                </li>
+            </ul>
+            <div class="hl" style="left: 0px; width: 87.7031px;"></div>
+          </div>
+        </header>
+
+        <div id="tabs">
+              <pre class="tCont JavaScript active hljs"><span class="hljs-comment">// Select DOM elements</span>
+<span class="hljs-keyword">const</span> form = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'expense-form'</span>);
+<span class="hljs-keyword">const</span> expenseList = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'expense-list'</span>);
+<span class="hljs-keyword">const</span> totalAmount = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'total-amount'</span>);
+
+<span class="hljs-comment">// Get expenses from localStorage or set to empty array</span>
+<span class="hljs-keyword">let</span> expenses = <span class="hljs-built_in">JSON</span>.parse(localStorage.getItem(<span class="hljs-string">'expenses'</span>)) || [];
+
+<span class="hljs-comment">// Function to update expense table and total</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateExpenses</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-comment">// Clear existing expenses</span>
+    expenseList.innerHTML = <span class="hljs-string">''</span>;
+
+    <span class="hljs-comment">// Recalculate total amount</span>
+    <span class="hljs-keyword">let</span> total = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">// Add each expense to the table</span>
+    expenses.forEach(<span class="hljs-function">(<span class="hljs-params">expense, index</span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> row = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'tr'</span>);
+        row.innerHTML = <span class="hljs-string">`
+            &lt;td&gt;<span class="hljs-subst">${expense.description}</span>&lt;/td&gt;
+            &lt;td&gt;$<span class="hljs-subst">${expense.amount.toFixed(<span class="hljs-number">2</span>)}</span>&lt;/td&gt;
+            &lt;td&gt;<span class="hljs-subst">${expense.date}</span>&lt;/td&gt;
+            &lt;td&gt;&lt;button onclick="deleteExpense(<span class="hljs-subst">${index}</span>)"&gt;Delete&lt;/button&gt;&lt;/td&gt;
+        `</span>;
+        expenseList.appendChild(row);
+        total += expense.amount;
+    });
+
+    <span class="hljs-comment">// Update total amount</span>
+    totalAmount.innerText = total.toFixed(<span class="hljs-number">2</span>);
+
+    <span class="hljs-comment">// Save expenses to localStorage</span>
+    localStorage.setItem(<span class="hljs-string">'expenses'</span>, <span class="hljs-built_in">JSON</span>.stringify(expenses));
+}
+
+<span class="hljs-comment">// Function to handle form submission</span>
+form.addEventListener(<span class="hljs-string">'submit'</span>, (event) =&gt; {
+    event.preventDefault();
+
+    <span class="hljs-comment">// Get values from form</span>
+    <span class="hljs-keyword">const</span> description = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'expense-name'</span>).value;
+    <span class="hljs-keyword">const</span> amount = <span class="hljs-built_in">parseFloat</span>(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'expense-amount'</span>).value);
+    <span class="hljs-keyword">const</span> date = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'expense-date'</span>).value;
+
+    <span class="hljs-comment">// Create new expense object</span>
+    <span class="hljs-keyword">const</span> newExpense = { description, amount, date };
+
+    <span class="hljs-comment">// Add expense to the array</span>
+    expenses.push(newExpense);
+
+    <span class="hljs-comment">// Update UI and localStorage</span>
+    updateExpenses();
+
+    <span class="hljs-comment">// Clear form</span>
+    form.reset();
+});
+
+<span class="hljs-comment">// Function to delete expense</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deleteExpense</span>(<span class="hljs-params">index</span>) </span>{
+    expenses.splice(index, <span class="hljs-number">1</span>);
+    updateExpenses();
+}
+
+<span class="hljs-comment">// Load expenses on page load</span>
+<span class="hljs-built_in">document</span>.addEventListener(<span class="hljs-string">'DOMContentLoaded'</span>, updateExpenses);</pre>
+              <pre class="tCont HTML hljs"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Expense Tracker<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"style.css"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"container"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Expense Tracker<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"expense-form"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"expense-name"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Expense Description"</span> <span class="hljs-attr">required</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"number"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"expense-amount"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Amount"</span> <span class="hljs-attr">required</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"date"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"expense-date"</span> <span class="hljs-attr">required</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span>&gt;</span>Add Expense<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Expenses:<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">table</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"expense-table"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">thead</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>Description<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>Amount<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>Date<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>Action<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">thead</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">tbody</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"expense-list"</span>&gt;</span>
+                <span class="hljs-comment">&lt;!-- Expenses will appear here --&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">tbody</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Total: $<span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"total-amount"</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"script.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></pre>
+              <pre class="tCont CSS hljs"><span class="hljs-selector-tag">body</span> {
+    <span class="hljs-attribute">font-family</span>: Arial, sans-serif;
+    <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#f4f4f4</span>;
+    <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-selector-class">.container</span> {
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">50%</span>;
+    <span class="hljs-attribute">margin</span>: <span class="hljs-number">20px</span> auto;
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">20px</span>;
+    <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#fff</span>;
+    <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">10px</span> <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.1</span>);
+}
+
+<span class="hljs-selector-tag">form</span> <span class="hljs-selector-tag">input</span>, <span class="hljs-selector-tag">form</span> <span class="hljs-selector-tag">button</span> {
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span>;
+    <span class="hljs-attribute">margin</span>: <span class="hljs-number">5px</span>;
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">16px</span>;
+}
+
+<span class="hljs-selector-tag">button</span> {
+    <span class="hljs-attribute">cursor</span>: pointer;
+    <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#28a745</span>;
+    <span class="hljs-attribute">color</span>: white;
+    <span class="hljs-attribute">border</span>: none;
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span> <span class="hljs-number">20px</span>;
+    <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">10px</span>;
+}
+
+<span class="hljs-selector-tag">table</span> {
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+    <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">20px</span>;
+    <span class="hljs-attribute">border-collapse</span>: collapse;
+}
+
+<span class="hljs-selector-tag">th</span>, <span class="hljs-selector-tag">td</span> {
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span>;
+    <span class="hljs-attribute">border-bottom</span>: <span class="hljs-number">1px</span> solid <span class="hljs-number">#ddd</span>;
+    <span class="hljs-attribute">text-align</span>: left;
+}</pre>
+              <div class="tCont result " id="result">
+              </div>
+        </div>
+    </div>
+    
+<!-- Google tag (gtag.js) -->
+<script async="" src="./js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function analytics_jsf(){dataLayer.push(arguments);}
+  analytics_jsf("js", new Date());
+  analytics_jsf("config", "G-DG76L8EKG3", {
+    page_path:     "/[user]/[fiddle]/[revision]/[embedded]/",
+    cookie_prefix: "jsfiddle",
+    
+  })
+</script>
+
+  
+
+</body></html>
